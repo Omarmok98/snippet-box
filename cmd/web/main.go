@@ -29,14 +29,16 @@ type application struct {
 }
 
 func main() {
-
+	// get port address from command line argument using flag
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	dsn := flag.String("dsn", "postgres://web:pass@localhost:5432/snippetbox?sslmode=disable", "PostgreSQL conenction string")
 	flag.Parse()
 
+	// create loggers
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
+	// create database connection
 	db, err := openDB(*dsn)
 
 	if err != nil {
@@ -44,11 +46,13 @@ func main() {
 	}
 
 	defer db.Close()
+	// inject loggers into application
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
 	}
 
+	// inject handlers into http server
 	srv := &http.Server{
 		Addr:     *addr,
 		ErrorLog: errorLog,
