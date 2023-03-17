@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 
+	"snippet-box.omarmokhtar.net/internal/models"
+
 	_ "github.com/lib/pq"
 )
 
@@ -26,6 +28,7 @@ func openDB(dsn string) (*sql.DB, error) {
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	snippets *models.SnippetModel
 }
 
 func main() {
@@ -50,6 +53,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		snippets: &models.SnippetModel{DB: db},
 	}
 
 	// inject handlers into http server
