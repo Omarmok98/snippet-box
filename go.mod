@@ -4,6 +4,8 @@ go 1.19
 
 require github.com/lib/pq v1.10.7
 
+require github.com/go-playground/form/v4 v4.2.0 // indirect
+
 require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect

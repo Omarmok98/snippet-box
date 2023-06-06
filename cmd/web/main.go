@@ -10,6 +10,7 @@ import (
 
 	"snippet-box.omarmokhtar.net/internal/models"
 
+	"github.com/go-playground/form/v4"
 	_ "github.com/lib/pq"
 )
 
@@ -31,6 +32,7 @@ type application struct {
 	infoLog       *log.Logger
 	snippets      *models.SnippetModel
 	templateCache map[string]*template.Template
+	formDecoder   *form.Decoder
 }
 
 func main() {
@@ -52,6 +54,7 @@ func main() {
 
 	defer db.Close()
 	templateCache, err := newTemplateCache()
+	formDecoder := form.NewDecoder()
 
 	if err != nil {
 		errorLog.Fatal(err)
@@ -62,6 +65,7 @@ func main() {
 		infoLog:       infoLog,
 		snippets:      &models.SnippetModel{DB: db},
 		templateCache: templateCache,
+		formDecoder:   formDecoder,
 	}
 
 	// inject handlers into http server
